@@ -11,6 +11,8 @@ $ npm install vue-cloud-music --save-dev
 ```bash
 $ npm install stylus stylus-loader file-loader --save-dev
 ```
+ 由于有引入图片，所以安装完之后，请设置file-loader用以解析文件
+
 ## 使用方法
 
  import引入之后，在vue中注册组件即可 
