@@ -3,12 +3,12 @@
 		<div class="moveBg"></div>
 		<div class="container">
 			<div class="panelHeader">
-				<audio v-bind:src="player.song.musicUrl" autoplay="autoplay"></audio>
+				<video autoplay="autoplay"></video>
 				<div v-bind:class="'album' + (player.song.album ? '' : ' default')" title="封面." v-bind:style="player.song.album ? ('background-image: url(' + player.song.album + ');') : ''"></div>
 				<div class="control">
-					<div class="info" v-if="player.song.songName || player.song.singer || player.song.singer2">
+					<div class="info" v-if="player.song.songName || player.song.singer">
 						<p class="name" title="歌名.">{{ player.song.songName }}</p>
-						<p class="singer" title="歌手.">{{ player.song.singer }}{{ player.song.singer2 ? (" 、" + player.song.singer2) : ''}}</p>
+						<p class="singer" title="歌手.">{{ player.song.singer }}</p>
 					</div>
 					<div class="info" v-else>
 						<p class="emptyPlayList">当前无歌曲</p>
@@ -17,13 +17,13 @@
 						<a class="prev" title="上一首." v-on:mousedown.stop="prevSong"></a>
 						<div>
 							<a class="play" title="播放." v-if="!player.status.playStatus" v-on:mousedown="changePlayStatus"></a>
-							<a class="pause" title="暂停." v-else v-on:mousedown="changePlayStatus"></a>
+							<a class="pause" title="暂停" v-else v-on:mousedown="changePlayStatus"></a>
 						</div>
 						<a class="next" title="下一首." v-on:mousedown.stop="nextSong"></a>
 					</div>
 					<div class="songNameAndSinger">
-						<span class="songName" title="歌名.">{{player.song.songName && player.song.songName.replace(/&#\d+;/g, '')}}</span>
-						<span class="singer" title="歌手." v-if="player.song.singer || player.song.singer2"> - {{player.song.singer}}{{player.song.singer2 ? (" 、" + player.song.singer2) : ""}}</span>							
+						<span class="songName" title="歌名.">{{player.song.songName}}</span>
+						<span class="singer" title="歌手." v-if="player.song.singer"> - {{player.song.singer}}</span>							
 					</div>
 				</div>
 				<div class="btn">
@@ -52,17 +52,16 @@
 				<div v-bind:class="'face' + (player.status.isShowPlayList && !player.status.isShowSearchList ? ' enable' : '') + (player.status.isShowSearchList ? ' flip' : '')">
 					<ul class="playList" v-if="playList.length > 0">
 						<li v-for="item in playList" v-on:dblclick="playSong(item)">
-							<i v-bind:class="'playStatus' + (player.song.id == item.id ? ' enable' : '')" title="正在播放."></i>
+							<i v-bind:class="'playStatus' + (player.song.hash == item.hash ? ' enable' : '')" title="正在播放."></i>
 							<div class="songInfo" title="双击播放.">
-								<p class="songName">{{item.fsong && item.fsong.replace(/&#\d+;/g, '')}}</p>
-								<p class="singer">{{item.fsinger}}{{item.fsinger2 ? (" 、" + item.fsinger2) : ''}}</p>							
+								<p class="songName">{{item.songname || item.songname_original}}</p>
+								<p class="singer">{{item.singername}}</p>							
 							</div>
-							<!-- <i v-bind:class="'enjoy'+(item.isEnojy?' enable':'')" title="喜欢." v-on:mousedown="enjoyThisSong(item.id)"></i> -->
 							<div class="btns">
 								<i class="play" title="播放." v-on:mousedown.stop="playSong(item)"></i>
 								<i class="delete" title="删除." v-on:mousedown.stop="deleteSong(item)"></i>
 							</div>
-							<i v-bind:class="'enjoy' + (item.isEnojy ? ' enable' : '')" title="喜欢." v-on:mousedown="enjoyThisSong(item.id)"></i>
+							<i v-bind:class="'enjoy' + (item.isEnojy ? ' enable' : '')" title="喜欢." v-on:mousedown="enjoyThisSong(item.hash)"></i>
 						</li>
 					</ul>
 					<div v-else class="playListIsEmpty">
@@ -78,8 +77,8 @@
 					<ul class="searchList" v-on:scroll="scrollSearchList">
 						<li v-for="item in searchList" v-on:dblclick="playSong(item)">
 							<div class="songInfo" title="双击播放">
-								<p class="songName">{{item.songname}}{{item.lyric}}</p>
-								<p class="singer"> - {{item.singer && item.singer[0].name}}</p>
+								<p class="songName">{{item.songname || item.songname_original}}</p>
+								<p class="singer"> - {{item.singername}}</p>
 							</div>
 							<div class="btns">
 								<i class="play" title="立即播放." v-on:mousedown.stop="playSong(item)"></i>
@@ -100,15 +99,14 @@
 				render: true,
 				/*播放器的相关信息*/
 				componentsBody: null,
-				guid: '',
 				player: {
 					/*当前播放的歌曲*/
 					song: {
 						isEnojy: false,
-						id: 0
+						hash: 0
 					},
 					/*audio标签信息*/
-					audio: null,
+					video: null,
 					/*记录播放器组件的一些状态*/
 					status: {
 						/*音量大小*/
@@ -148,16 +146,11 @@
 					alert('搜索关键词不能为空！');
 					return;
 				}
-				var url = 'https://c.y.qq.com/soso/fcgi-bin/client_search_cp?p=' + (this.queryData.pageNum || 0) + '&n=' + (this.queryData.pageSize || 20) + '&w=' + (this.queryData.keyWords) + '&jsonpCallback=searchMusicCallback&format=jsonp&inCharset=utf8&outCharset=utf-8';
-				// var	url = 'http://s.music.qq.com/fcgi-bin/music_search_new_platform?t=0&n=' +  + '&aggr=1&cr=1&loginUin=0&format=jsonp&inCharset=GB2312&outCharset=utf-8&notice=0&platform=jqminiframe.json&needNewCode=0&p=' + (this.queryData.pageNum || 0) + '&catZhida=0&remoteplace=sizer.newclient.next_song&w=' + (this.queryData.keyWords) + '&callback=callback';
+				var url = 'http://zoone.cc:8080/phpServer/queryMusicList.php?keyword=' + this.queryData.keyWords + '&callback=searchMusicCallback&page_size=' + (this.queryData.size || 20) + '&page_no=' + (this.queryData.pageNum || 0);
 				var script = document.createElement("script"), _this = this;
 				window.searchMusicCallback = function(data){
-					var list = data.data.song.list;
+					var list = data.data.info;
 					for (var i = 0; i < list.length; i++) {
-						// list[i].id = list[i].f.split("|")[20];
-						list[i].id = list[i].media_mid;
-						// list[i].img = list[i].f.split("|")[22];
-						// list[i].lrc = list[i].f.split("|")[0];
 						list[i].isEnojy = false;
 					}
 					if (again) {
@@ -170,10 +163,7 @@
 				document.body.append(script);
 			},
 			getKey: function(QQNumber, songObj){
-				// var url = 'http://base.music.qq.com/fcgi-bin/fcg_musicexpress.fcg?json=3&loginUin=' + (QQNumber ? QQNumber : 0) + '&format=jsonp&inCharset=GB2312&outCharset=GB2312&notice=0&platform=yqq&needNewCode=0&callback=jsonCallback';
 				var url = 'http://base.music.qq.com/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=' + this.guid +'&loginUin=' + QQNumber + '&format=jsonp&inCharset=GB2312&outCharset=GB2312%C2%ACice=0&platform=yqq&jsonpCallback=jsonpCallback&needNewCode=0';
-				// var url = 'http://base.music.qq.com/fcgi-bin/fcg_musicexpress.fcg?json=3&loginUin=' + (QQNumber ? QQNumber : 0) + '&format=jsonp&inCharset=GB2312&outCharset=GB2312&notice=0&platform=yqq&needNewCode=0&callback=jsonCallback';
-
 				var script = document.createElement("script"), _this = this;
 				window.jsonCallback = function(data){
 					console.log(data);
@@ -185,35 +175,38 @@
 				document.body.append(script);
 			},
 			getSource: function(songObj){
-				this.player.audio.stop && this.player.audio.stop();
-				this.player.song.musicUrl = '';
-				this.player.song.musicUrl = 'http://dl.stream.qqmusic.qq.com/C400' + songObj.id + '.m4a?vkey=' + this.queryData.key + '&guid=' + this.guid + '&uin=632893783&fromtag=66';
-				console.log(this.player.song.musicUrl);
-				// this.player.song.album = 'http://imgcache.qq.com/music/photo/mid_album_90/' + songObj.img[songObj.img.length - 2] + '/' + songObj.img[songObj.img.length - 1] + '/' + songObj.img + '.jpg';
-				// this.player.song.lrcUrl = 'http://music.qq.com/miniportal/static/lyric/' + parseInt(songObj.lrc) % 100 + '/' + songObj.lrc + '.xml';
-				// this.player.song.songName = songObj.fsong;
-				// this.player.song.singer = songObj.fsinger;
-				// this.player.song.singer2 = songObj.fsinger2;
-				this.player.song.isEnojy = songObj.isEnojy;
-				/*若当前没有播放任何歌曲,获取资源播放歌曲的时候，我们将歌曲添加到播放列表（addToPlayList方法会判断列表里面是否已经存在该歌曲）*/
-				if (!this.player.song.id) {
-					this.addToPlayList(songObj);
-				}
-				/*若当前有播放歌曲，并且当前播放歌曲，和我们现在所要播放的不同，也将歌曲添加到播放列表（addToPlayList方法会判断列表里面是否已经存在该歌曲）*/
-				else if (this.player.song.id && this.player.song.id != songObj.id) {
-					this.addToPlayList(songObj);
-				}
-				/*除此之外什么也不干*/
-				else {
-					console.log("正在播放" + songObj.fsong);
-				}
-				this.player.song.id = songObj.id;
-				var _this = this;
-				_this.player.status.playStatus = true;
-				// _this.player.audio.play();
-				this.player.audio.onload = function(){
-					_this.player.audio.play();
-				};
+				this.player.video.stop && this.player.video.stop();
+				var url = 'http://www.kugou.com/yy/index.php?r=play/getdata&hash=' + songObj.hash + '&callback=getMusicInfo';
+				var script = document.createElement("script"), _this = this;
+				window.getMusicInfo = function(data){
+					_this.player.song.album = data.data.img;
+					_this.player.musicUrl = data.data.play_url
+					_this.player.status.playStatus = true;
+					_this.player.song.songName = data.data.song_name;
+					_this.player.song.singer = data.data.author_name;
+					_this.player.song.isEnojy = songObj.isEnojy;
+					/*若当前没有播放任何歌曲,获取资源播放歌曲的时候，我们将歌曲添加到播放列表（addToPlayList方法会判断列表里面是否已经存在该歌曲）*/
+					if (!_this.player.song.hash) {
+						_this.addToPlayList(songObj);
+					}
+					/*若当前有播放歌曲，并且当前播放歌曲，和我们现在所要播放的不同，也将歌曲添加到播放列表（addToPlayList方法会判断列表里面是否已经存在该歌曲）*/
+					else if (_this.player.song.hash && _this.player.song.hash != songObj.hash) {
+						_this.addToPlayList(songObj);
+					}
+					/*除此之外什么也不干*/
+					else {
+						console.log("正在播放" + songObj.song_name);
+					}
+					_this.player.video.setAttribute('src', _this.player.musicUrl);
+					_this.player.song.hash = data.data.hash;
+					_this.player.video.play();
+					_this.player.video.onload = function(){
+						_this.player.video.play();
+					};
+					document.body.removeChild(script);
+				}				
+				script.setAttribute('src', url);
+				document.body.append(script);
 			},
 			showOrHiddenPlayList: function() {
 				this.player.status.isShowSearchList = false;
@@ -227,15 +220,11 @@
 				this.queryData.keyWords = event.target.value;
 			},
 			playSong: function(songObj) {
-				var guid = Math.round(2147483647 * Math.random()) * (new Date).getUTCMilliseconds() % 1e10;
-				document.cookie = "pgv_pvid=" + guid + "; Expires=Sun, 18 Jan 2038 00:00:00 GMT; PATH=/; DOMAIN=qq.com;";
-				console.log(document.cookie);
-				this.guid = guid;
-				this.getKey(632893783, songObj);
+				this.getSource(songObj);
 			},
-			addToPlayList: function(songObj,type) {
+			addToPlayList: function(songObj, type) {
 				for (var i = 0; i < this.playList.length; i++) {
-					if (this.playList[i].id == songObj.id) {
+					if (this.playList[i].hash == songObj.hash) {
 						if (type == 'add') {
 							alert('该歌曲已经添加到列表！');
 						}
@@ -250,7 +239,7 @@
 			enjoyThisSong: function(id) {
 				if (!id) {
 					for (var i = 0; i < this.playList.length; i++) {
-						if(this.playList[i].id == this.player.song.id){
+						if(this.playList[i].hash == this.player.song.hash){
 							this.playList[i].isEnojy = !this.playList[i].isEnojy;
 							this.$set(this.player.song, 'isEnojy', this.playList[i].isEnojy);
 							return;
@@ -258,9 +247,9 @@
 					}
 				} else {
 					for (var i = 0; i < this.playList.length; i++) {
-						if (this.playList[i].id == id) {
+						if (this.playList[i].hash == id) {
 							this.playList[i].isEnojy = !this.playList[i].isEnojy;
-							if (id == this.player.song.id) {
+							if (id == this.player.song.hash) {
 								this.$set(this.player.song, 'isEnojy', this.playList[i].isEnojy);
 							}
 							return;
@@ -270,14 +259,14 @@
 			},
 			deleteSong: function(item) {
 				for (var i = 0; i < this.playList.length; i++) {
-					if (item.id == this.playList[i].id) {
+					if (item.hash == this.playList[i].hash) {
 						this.playList.splice(i, 1);
 					}
 				}
 			},
 			changePlayMode: function() {
 				this.player.status.playMode = (this.player.status.playMode + 1) % 3;
-				this.player.audio.loop = this.player.status.playMode == 2;
+				this.player.video.loop = this.player.status.playMode == 2;
 			},
 			setProgressDotMoveEnable: function(event) {
 				this.player.status.volume.progressDotMoveEnable = true;
@@ -287,7 +276,7 @@
 			progressDotMove: function(event) {
 				if (this.player.status.volume.progressDotMoveEnable) {
 					this.player.status.volume.value = event.offsetX;
-					this.player.audio.volume = this.player.status.volume.value / 100;
+					this.player.video.volume = this.player.status.volume.value / 100;
 				}
 			},
 			setProgressDotMoveDisable: function() {
@@ -299,15 +288,15 @@
 						alert('请先添加歌曲！');
 						return;						
 					} else {
-						if (!this.player.song.id) {
+						if (!this.player.song.hash) {
 							this.playSong(this.playList[0]);
 						}
 					}
 				}
 				if (this.player.status.playStatus) {
-					this.player.audio.pause();
+					this.player.video.pause();
 				} else {
-					this.player.audio.play();
+					this.player.video.play();
 				}
 				this.player.status.playStatus = !this.player.status.playStatus;
 			},
@@ -316,7 +305,7 @@
 					alert('请先添加歌曲！');
 					return;
 				}
-				if (!this.player.song.id) {
+				if (!this.player.song.hash) {
 					this.playSong(this.playList[0]);
 				} else {
 					if (this.playList.length <= 1) {
@@ -332,7 +321,7 @@
 					alert('请先添加歌曲！');
 					return;
 				}		
-				if (!this.player.song.id) {
+				if (!this.player.song.hash) {
 					this.playSong(this.playList[0]);
 				} else {
 					if (this.playList.length <= 1) {
@@ -346,7 +335,7 @@
 			/*根据当前歌曲的id计算下一首歌或者上一首歌*/
 			getNextOrPrevSongItem: function(type) {
 				for (var index = 0; index < this.playList.length; index++) {
-					if (this.playList[index].id == this.player.song.id) {
+					if (this.playList[index].hash == this.player.song.hash) {
 						break;
 					}
 				}
@@ -398,8 +387,8 @@
 		computed: {},
 		mounted: function() {
 			var _this = this;
-			this.player.audio = document.querySelector('audio');
-			this.player.audio.addEventListener('ended', function() {
+			this.player.video = document.querySelector('video');
+			this.player.video.addEventListener('ended', function() {
 				_this.nextSong('playFinish');
 			});
 			this.componentsBody = document.querySelector('.vueCloudMusic');
@@ -407,7 +396,7 @@
 	}
 </script>
 <style lang="stylus" scoped>
-	icon = 'http://zoone.cc/vue/src/imgs/qqMusicPlayer/icon.png'
+	icon = '../src/icon.png'
 	*
 		box-sizing border-box
 		margin 0
@@ -418,13 +407,8 @@
 	ul, li
 		list-styl none
 	.vueCloudMusic
-		position fixed
-		z-index 11
-		right 100px
-		top 100px
+		position relative
 		width 320px
-		// width 303px
-		// height 329px
 		height 70px
 		.moveBg
 			width 100%
@@ -445,7 +429,7 @@
 				position relative
 				background-color white
 				z-index 1
-				audio
+				video
 					display none
 				.album
 					display inline-block

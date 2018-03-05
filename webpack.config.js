@@ -9,6 +9,9 @@ module.exports = {
 		rules: [{
 			test: /\.vue$/,
 			use: ['vue-loader']
+		}, {
+			test: /\.(jpe?g|png)$/,
+			use: ['file-loader']
 		}]
 	}
 }
