@@ -41,7 +41,11 @@ $ npm install stylus stylus-loader file-loader --save-dev
 ```
 
 ## demo运行方法
- 将项目下载到本地之后，npm install安装node模块，在cmd中输入
+ 将项目下载到本地之后，
+```bash
+ $ npm install
+```
+ 安装node模块，在cmd中输入
 ```bash
  $ webpack-dev-server
 ```
