@@ -1,6 +1,7 @@
 # vue-cloud-music
 
  一个基于vue的音乐播放器插件，ui风格参考网易云音乐
+ demo地址 http://zoone.cc:8080/webproject/vue_components_demo/vue-cloud-music
 
 ## 安装
 
