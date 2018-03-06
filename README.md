@@ -8,11 +8,14 @@
 ```bash
 $ npm install vue-cloud-music --save-dev
 ```
- 组件使用stylus预编译样式，项目中需要安装stylus与stylus-loader，file-loader用于解析文件
+ v1.0.3及之前版本组件使用stylus预编译样式，项目中需要安装stylus与stylus-loader，file-loader或者url-loader用于解析文件
+
 ```bash
 $ npm install stylus stylus-loader file-loader --save-dev
 ```
- 由于有引入图片，所以安装完之后，请设置file-loader用以解析文件
+ 组件含引入图片，所以安装完之后，请设置file-loader或url-loader用以解析文件
+
+ 由于stylus并不常用，v1.0.4以及之后版本样式已经编译为普通css文件了，省去项目安装stylus的步骤
 
 ## 使用方法
 
@@ -39,7 +42,7 @@ $ npm install stylus stylus-loader file-loader --save-dev
         }
     }
 </script>
-<style lang="styl"></style>
+<style scoped></style>
 ```
 
 ## demo运行方法
