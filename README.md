@@ -20,13 +20,12 @@ $ npm install stylus stylus-loader file-loader --save-dev
 
 ### 示例
 
-```bash
+```vue
 <template>
     <div>
         <vue-cloud-music></vue-cloud-music>
     </div>
 </template>
-
 <script>
     import vueCloudMusic from 'vue-cloud-music';
     export default {
@@ -52,4 +51,4 @@ $ npm install stylus stylus-loader file-loader --save-dev
 ```bash
  $ webpack-dev-server
 ```
- 之后在浏览器中输入http://localhost:8080预览
+ 之后在浏览器中输入http://localhost:8080，预览
