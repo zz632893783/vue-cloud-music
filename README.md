@@ -1,7 +1,7 @@
 # vue-cloud-music
 
  一个基于vue的音乐播放器插件，ui风格参考网易云音乐
- demo地址 http://zoone.cc:8080/webproject/vue_components_demo/vue-cloud-music
+ demo地址 [点我点我](http://zoone.cc:8080/webproject/vue_components_demo/vue-cloud-music)
 
 ## 安装
 
@@ -51,4 +51,4 @@ $ npm install stylus stylus-loader file-loader --save-dev
 ```bash
  $ webpack-dev-server
 ```
- 之后在浏览器中输入http://localhost:8080，预览
+ 之后在浏览器中输入http://localhost:8080
