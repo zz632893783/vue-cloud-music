@@ -1,668 +1,502 @@
 @import './vendor.styl'
 icon = '../src/icon.png'
-	*
-		box-sizing border-box
-		margin 0
-		padding 0
-		border 0
-		font-size 100%
-		vertical-align baseline
-	ul, li
-		list-styl none
-	.vueCloudMusic
-		position relative
-		width 320px
-		height 42px
-		.moveBg
-			width 100%
-			height 100%
-			// min-height 50px
-		.container
-			width 100%
-			height 100%
-			position absolute
-			left 50%
-			top 50%
-			transform translate(-50%,-50%)
-			.panelHeader
-				width 297px
-				// width 320px
+*
+	box-sizing border-box
+	margin 0
+	padding 0
+	border 0
+	font-size 100%
+	vertical-align baseline
+ul, li
+	list-styl none
+.vueCloudMusic
+	position relative
+	width 320px
+	height 42px
+	.moveBg
+		width 100%
+		height 100%
+		// min-height 50px
+	.container
+		width 100%
+		height 100%
+		position absolute
+		left 50%
+		top 50%
+		transform translate(-50%,-50%)
+		.panelHeader
+			width 297px
+			// width 320px
+			height 42px
+			margin 0 auto
+			font-size 0
+			box-shadow 0 3px 10px rgba(0,0,0,0.2)
+			position relative
+			background-color white
+			z-index 1
+			text-align left
+			transition width speed, height speed
+			video
+				display none
+			.album
+				display inline-block
+				width 42px
 				height 42px
-				margin 0 auto
-				font-size 0
-				box-shadow 0 3px 10px rgba(0,0,0,0.2)
+				background-position 50% 50%
+				vertical-align middle
 				position relative
-				background-color white
 				z-index 1
-				text-align left
-				transition width speed, height speed
-				video
-					display none
-				.album
-					display inline-block
-					width 42px
-					height 42px
-					background-position 50% 50%
-					vertical-align middle
-					position relative
-					z-index 1
+				background-color white
+				// box-shadow 0 0 3px 3px rgba(0,0,0,0.05)
+				&.cursor
+					cursor pointer
+				&:not(.default)
+					background-size cover
+				&.default
+					background-image url(icon)
+					background-position -120px -120px
+			.control
+				display inline-block
+				width 110px
+				height 42px
+				margin-left 5px
+				vertical-align middle
+				position relative
+				z-index 0
+				transition opacity speed
+				.info
 					background-color white
-					// box-shadow 0 0 3px 3px rgba(0,0,0,0.05)
-					&.cursor
-						cursor pointer
-					&:not(.default)
-						background-size cover
-					&.default
-						background-image url(icon)
-						background-position -120px -120px
-				.control
-					display inline-block
+					position absolute
 					width 110px
 					height 42px
-					margin-left 5px
-					vertical-align middle
-					position relative
-					z-index 0
-					transition opacity speed
-					.info
-						background-color white
-						position absolute
-						width 110px
-						height 42px
-						left 0
-						top 0
-						z-index 1
-						opacity 1
-						transition opacity 0.5s
-						p
-							line-height 21px
-							font-size 12px
-							overflow hidden
-							text-overflow ellipsis
-							white-space nowrap
-							text-align center
-							&.name
-								color rgb(52,52,52)
-							&.singer
-								color rgb(102,102,102)
-							&.emptyPlayList
-								position absolute
-								left 50%
-								top 50%
-								transform translate(-50%,-50%)
-								line-height 16px
-								color rgb(102,102,102)
-					.controlBtn
-						width 110px
-						height 42px
-						line-height 42px
-						text-align center
-						background-color white
-						position absolute
-						left 0
-						top 0
-						z-index 0
-						opacity 0
-						transition opacity 0.5s
-						a
-						>div
-							display inline-block
-							vertical-align middle
-						a
-							width 22px
-							height 22px
-							cursor pointer
-							background-image url(icon)
-							&.prev
-								background-position 0 -90px
-								&:hover
-									background-position -30px -90px
-							&.next
-								background-position -60px -90px
-								&:hover
-									background-position -90px -90px
-						>div
-							width 26px
-							height 26px
-							position relative
-							margin 0 10px
-							a
-								width 26px
-								height 26px
-								position absolute
-								left 50%
-								top 50%
-								transform translate(-50%,-50%)
-								&.play
-									background-position -60px -60px
-									&:hover
-										background-position -90px -60px
-								&.pause
-									background-position -120px -60px
-									&:hover
-										background-position -150px -60px
-					.songNameAndSinger
-						position absolute
-						top 42px
-						left -45px
-						width 293px
-						background-color rgba(255,255,255,0.79)
+					left 0
+					top 0
+					z-index 1
+					opacity 1
+					transition opacity 0.5s
+					p
+						line-height 21px
+						font-size 12px
 						overflow hidden
-						line-height 23px
-						height 0
-						transition height 0.5s
 						text-overflow ellipsis
 						white-space nowrap
 						text-align center
-						box-shadow 0 3px 10px rgba(0,0,0,0.2)
-						span
-							display inline-block
-							font-size 12px
-							&.songName
-								color rgb(52,52,52)
-							&.singer
-								color rgb(102,102,102)
-					&:hover
-						.info
-							z-index 0
-							opacity 0
-						.controlBtn
-							z-index 1
-							opacity 1
-						.songNameAndSinger
-							height 23px
-				.btn
-					position absolute
-					top 0
-					right 0
-					line-height 42px
-					z-index 1
-					background-color white
-					>a
-					.volume
-					.search
-					.close
-						display inline-block
-						vertical-align middle
-						margin 0 4px
-					>a
-						background-image url(icon)
-						cursor pointer
-						&.playMode
-							margin-left 0
-							&.random
-								width 15px
-								height 13px
-								background-position -60px -30px
-								&:hover
-									background-position -90px -30px
-							&.single
-								width 15px
-								height 15px
-								background-position 0 -60px
-								&:hover
-									background-position -30px -60px
-							&.loop
-								width 15px
-								height 15px	
-								background-position -120px -30px
-								&:hover
-									background-position -150px -30px
-						&.enjoy
-							width 15px
-							height 13px
-							background-position 0 0
-							&:hover
-								background-position -30px 0
-							&.enable
-								background-position -30px 0
-						&.showList
-							width 13px
-							height 11px
-							background-position -120px 0
-							&:hover
-								background-position -150px 0
-							&.enable
-								background-position -150px 0
-					.volume
-						width 15px
-						height 13px
-						background-image url(icon)
-						cursor pointer
-						background-position 0 -30px
-						position relative
-						&:hover
-							background-position -30px -30px
-							.outer
-								display block
-						.outer
-							display none
-							height 46px
-							width 100%
-							position absolute
-							left 50%
-							top 0
-							transform translate(-50%,-100%)
-							.volumeControl
-							.boxShadow
-								position absolute
-								width 114px
-								height 32px
-								background-color white
-								left 50%
-								top 0
-								transform translate(-50%,0)
-								border-radius 2px
-								>.dot
-									position absolute
-									left 50%
-									bottom 6px
-									transform translate(-50%,100%) rotate(-135deg)
-									border-top 10px solid white
-									border-right 10px solid transparent
-									border-bottom 0 solid
-									border-left 0 solid
-							.volumeControl
-								z-index 1
-								text-align center
-								line-height 32px
-								cursor default
-								.progress
-									display inline-block
-									height 8px
-									border-radius 4px
-									width 100px
-									border-left-color rgb(104,104,104)
-									border-right-color rgb(141,141,141)
-									// border-left-width 50px
-									// border-right-width 50px
-									border-style solid
-									position absolute
-									left 50%
-									top 50%
-									transform translate(-50%,-50%)
-									cursor pointer
-									vertical-align middle
-									z-index 0
-									&.cover
-										border none
-										width 100px
-										height 12px
-									.progressDot
-										position absolute
-										width 12px
-										height 12px
-										box-shadow 0 0 5px 3px rgba(0,0,0,0.1)
-										border-radius 50%
-										top 50%
-										transform translate(-50%,-50%)
-										background-color white
-										&:after
-											content " "
-											font-size 0
-											left 50%
-											top 50%
-											transform translate(-50%,-50%)
-											width 4px
-											height 4px
-											border-radius 50%
-											background-color rgb(104,104,104)
-											position absolute
-							.boxShadow
-								z-index 0
-								box-shadow 0 0 5px 3px rgba(0,0,0,0.1)
-								>.dot
-									box-shadow 0 0 5px 3px rgba(0,0,0,0.1)
-					.close
-						display inline-block
-						width 16px
-						height @width
-						position relative
-						cursor pointer
-						i
-							position absolute
-							left 50%
-							top 50%
-							background-color rgb(132,132,132)
-							&:nth-child(1)
-								transform translate(-50%,-50%) rotate(45deg)
-								width 100%
-								height 1px
-							&:nth-child(2)
-								transform translate(-50%,-50%) rotate(45deg)
-								height 100%
-								width 1px
-						&:hover
-							i
-								background-color rgb(199,48,48)
-					.search
-						background-image url(icon)
-						cursor pointer
-						display inline-block
-						width 15px
-						height 15px
-						background-position -60px 0
-						&:hover
-							background-position -90px 0
-						&.enable
-							background-position -90px 0
-			.panelBody
-				width 294px
-				margin 0 auto
-				position relative
-				perspective 800
-				-webkit-perspective 800
-				height 0
-				.face
-					backface-visibility hidden
-					transform rotateY(0)
-					position absolute
-					width 100%
-					// height 280px
-					transition transform 0.5s,height 0.5s
-					overflow hidden
-					box-shadow 0 3px 10px rgba(0,0,0,0.1)
-					height 0
-					background-color rgba(255,255,255,0.9)
-					text-align left
-					&.enable
-						height 280px
-					&.flip
-						transform rotateY(180deg)
-					>.playList
-						height 280px
-						overflow-y auto
-						box-shadow 0 3px 10px rgba(0,0,0,0.1)
-						&:-webkit-scrollbar
-							background-color transparent
-							width 8px
-						&::-webkit-scrollbar
-							background-color transparent
-							width 8px
-						&:-webkit-scrollbar-thumb
-							background-color rgba(0,0,0,0.1)
-							-webkit-border-radius 4px
-							opacity 0
-							width 8px
-						&::-webkit-scrollbar-thumb
-							background-color rgba(0,0,0,0.1)
-							-webkit-border-radius 4px
-							opacity 0
-							width 8px
-						li
-							position relative
-							cursor default
-							&:nth-child(2n+1)
-								background-color rgba(255,255,255,0.95)
-								&:hover
-									background-color rgba(243,243,244,0.95)
-									.btns
-										display block
-									>.enjoy
-										display block
-								&.current
-									background-color rgba(232,232,234,0.95)
-							&:nth-child(2n)
-								background-color rgba(250,250,251,0.95)
-								&:hover
-									background-color rgba(243,243,244,0.95)
-									.btns
-										display block
-									>.enjoy
-										display block
-								&.current
-									background-color rgba(232,232,234,0.95)
-							i
-								display inline-block
-								vertical-align middle
-								&.playStatus
-									width 15px
-									height 28px
-									position relative
-									&.enable
-										&:after
-											content " "
-											font-size 0
-											border-top 5px solid transparent
-											border-left 0 solid
-											border-bottom 5px solid transparent
-											border-left 7px solid rgb(199,48,48)
-											left 50%
-											top 50%
-											position absolute
-											transform translate(-50%,-50%)
-							.songInfo
-								display inline-block
-								width 200px
-								margin-left 5px
-								vertical-align middle
-								overflow hidden
-								text-overflow ellipsis
-								white-space nowrap
-								font-size 13px
-								p
-									display inline-block
-								.songName
-									color rgb(55,55,55)
-								.singer
-									color rgb(103,103,103)
-							>.enjoy
-								width 14px
-								height 13px
-								background-image url(icon)
-								background-position 0 -120px
-								display inline-block
-								vertical-align middle
-								cursor pointer
-								margin-left 5px
-								position absolute
-								right 10px
-								transform translate(0,-50%)
-								top 50%
-								display none
-								&:hover
-									background-position -30px -120px
-								&.enable
-									background-position -30px -120px
-									display block						
-							.btns
-								position absolute
-								top 50%
-								right 30px
-								transform translate(0,-50%)
-								font-size 0
-								display none
-								i
-									display inline-block
-									vertical-align middle
-									cursor pointer
-									margin-left 5px
-									&.play
-										position relative
-										width 7px
-										height 10px
-										margin-left 7px
-										&:after
-											content ""
-											position absolute
-											left 50%
-											top 50%
-											transform translate(-50%,-50%)
-											width 0
-											height 0
-											border-top 5px solid transparent
-											border-right 0 solid
-											border-bottom 5px solid transparent
-											border-left 7px solid rgb(132,132,132)
-										&:hover
-											&:after
-												content ""
-												position absolute
-												left 50%
-												top 50%
-												transform translate(-50%,-50%)
-												width 0
-												height 0
-												border-top 5px solid transparent
-												border-right 0 solid
-												border-bottom 5px solid transparent
-												border-left 7px solid rgb(199,48,48)
-									// &.enjoy
-									// 	width 14px
-									// 	height 13px
-									// 	background-image url(icon)
-									// 	background-position 0 -120px
-									// 	&:hover
-									// 		background-position -30px -120px
-									// 	&.enable
-									// 		background-position -30px -120px
-									&.delete
-										width 13px
-										height 14px
-										background-image url(icon)
-										background-position -120px -90px
-										margin-left 9px
-										&:hover
-											background-position -150px -90px
-					.playListIsEmpty
-						position relative
-						height 100%
-						span
+						&.name
+							color rgb(52,52,52)
+						&.singer
+							color rgb(102,102,102)
+						&.emptyPlayList
 							position absolute
 							left 50%
 							top 50%
 							transform translate(-50%,-50%)
-							width 80%
-							text-align center
-							line-height 18px
-							font-size 12px
-							color rgb(200,200,200)
-				>.back
-					height 280px
-					width 100%
+							line-height 16px
+							color rgb(102,102,102)
+				.controlBtn
+					width 110px
+					height 42px
+					line-height 42px
+					text-align center
+					background-color white
 					position absolute
 					left 0
 					top 0
-					box-shadow 0 3px 10px rgba(0,0,0,0.1)
-					backface-visibility hidden
-					transform rotateY(180deg)
+					z-index 0
+					opacity 0
+					transition opacity 0.5s
+					a
+					>div
+						display inline-block
+						vertical-align middle
+					a
+						width 22px
+						height 22px
+						cursor pointer
+						background-image url(icon)
+						&.prev
+							background-position 0 -90px
+							&:hover
+								background-position -30px -90px
+						&.next
+							background-position -60px -90px
+							&:hover
+								background-position -90px -90px
+					>div
+						width 26px
+						height 26px
+						position relative
+						margin 0 10px
+						a
+							width 26px
+							height 26px
+							position absolute
+							left 50%
+							top 50%
+							transform translate(-50%,-50%)
+							&.play
+								background-position -60px -60px
+								&:hover
+									background-position -90px -60px
+							&.pause
+								background-position -120px -60px
+								&:hover
+									background-position -150px -60px
+				.songNameAndSinger
+					position absolute
+					top 42px
+					left -45px
+					width 293px
+					background-color rgba(255,255,255,0.79)
 					overflow hidden
-					transition transform 0.5s, height 0.5s
+					line-height 23px
 					height 0
-					cursor default
+					transition height 0.5s
+					text-overflow ellipsis
+					white-space nowrap
+					text-align center
+					box-shadow 0 3px 10px rgba(0,0,0,0.2)
+					span
+						display inline-block
+						font-size 12px
+						&.songName
+							color rgb(52,52,52)
+						&.singer
+							color rgb(102,102,102)
+				&:hover
+					.info
+						z-index 0
+						opacity 0
+					.controlBtn
+						z-index 1
+						opacity 1
+					.songNameAndSinger
+						height 23px
+			.btn
+				position absolute
+				top 0
+				right 0
+				line-height 42px
+				z-index 1
+				background-color white
+				>a
+				.volume
+				.search
+				.close
+					display inline-block
+					vertical-align middle
+					margin 0 4px
+				>a
+					background-image url(icon)
+					cursor pointer
+					&.playMode
+						margin-left 0
+						&.random
+							width 15px
+							height 13px
+							background-position -60px -30px
+							&:hover
+								background-position -90px -30px
+						&.single
+							width 15px
+							height 15px
+							background-position 0 -60px
+							&:hover
+								background-position -30px -60px
+						&.loop
+							width 15px
+							height 15px	
+							background-position -120px -30px
+							&:hover
+								background-position -150px -30px
+					&.enjoy
+						width 15px
+						height 13px
+						background-position 0 0
+						&:hover
+							background-position -30px 0
+						&.enable
+							background-position -30px 0
+					&.showList
+						width 13px
+						height 11px
+						background-position -120px 0
+						&:hover
+							background-position -150px 0
+						&.enable
+							background-position -150px 0
+				.volume
+					width 15px
+					height 13px
+					background-image url(icon)
+					cursor pointer
+					background-position 0 -30px
+					position relative
+					&:hover
+						background-position -30px -30px
+						.outer
+							display block
+					.outer
+						display none
+						height 46px
+						width 100%
+						position absolute
+						left 50%
+						top 0
+						transform translate(-50%,-100%)
+						.volumeControl
+						.boxShadow
+							position absolute
+							width 114px
+							height 32px
+							background-color white
+							left 50%
+							top 0
+							transform translate(-50%,0)
+							border-radius 2px
+							>.dot
+								position absolute
+								left 50%
+								bottom 6px
+								transform translate(-50%,100%) rotate(-135deg)
+								border-top 10px solid white
+								border-right 10px solid transparent
+								border-bottom 0 solid
+								border-left 0 solid
+						.volumeControl
+							z-index 1
+							text-align center
+							line-height 32px
+							cursor default
+							.progress
+								display inline-block
+								height 8px
+								border-radius 4px
+								width 100px
+								border-left-color rgb(104,104,104)
+								border-right-color rgb(141,141,141)
+								// border-left-width 50px
+								// border-right-width 50px
+								border-style solid
+								position absolute
+								left 50%
+								top 50%
+								transform translate(-50%,-50%)
+								cursor pointer
+								vertical-align middle
+								z-index 0
+								&.cover
+									border none
+									width 100px
+									height 12px
+								.progressDot
+									position absolute
+									width 12px
+									height 12px
+									box-shadow 0 0 5px 3px rgba(0,0,0,0.1)
+									border-radius 50%
+									top 50%
+									transform translate(-50%,-50%)
+									background-color white
+									&:after
+										content " "
+										font-size 0
+										left 50%
+										top 50%
+										transform translate(-50%,-50%)
+										width 4px
+										height 4px
+										border-radius 50%
+										background-color rgb(104,104,104)
+										position absolute
+						.boxShadow
+							z-index 0
+							box-shadow 0 0 5px 3px rgba(0,0,0,0.1)
+							>.dot
+								box-shadow 0 0 5px 3px rgba(0,0,0,0.1)
+				.close
+					display inline-block
+					width 16px
+					height @width
+					position relative
+					cursor pointer
+					i
+						position absolute
+						left 50%
+						top 50%
+						background-color rgb(132,132,132)
+						&:nth-child(1)
+							transform translate(-50%,-50%) rotate(45deg)
+							width 100%
+							height 1px
+						&:nth-child(2)
+							transform translate(-50%,-50%) rotate(45deg)
+							height 100%
+							width 1px
+					&:hover
+						i
+							background-color rgb(199,48,48)
+				.search
+					background-image url(icon)
+					cursor pointer
+					display inline-block
+					width 15px
+					height 15px
+					background-position -60px 0
+					&:hover
+						background-position -90px 0
 					&.enable
-						height 280px					
-					&.flip
-						transform rotateY(0)
-					.input
-						line-height 28px
-						font-size 0
-						text-align center
-						// background-color rgba(0,0,0,0.1)
-						background-color rgba(240,240,240,0.9)
+						background-position -90px 0
+		.panelBody
+			width 294px
+			margin 0 auto
+			position relative
+			perspective 800
+			-webkit-perspective 800
+			height 0
+			.face
+				backface-visibility hidden
+				transform rotateY(0)
+				position absolute
+				width 100%
+				// height 280px
+				transition transform 0.5s,height 0.5s
+				overflow hidden
+				box-shadow 0 3px 10px rgba(0,0,0,0.1)
+				height 0
+				background-color rgba(255,255,255,0.9)
+				text-align left
+				&.enable
+					height 280px
+				&.flip
+					transform rotateY(180deg)
+				>.playList
+					height 280px
+					overflow-y auto
+					box-shadow 0 3px 10px rgba(0,0,0,0.1)
+					&:-webkit-scrollbar
+						background-color transparent
+						width 8px
+					&::-webkit-scrollbar
+						background-color transparent
+						width 8px
+					&:-webkit-scrollbar-thumb
+						background-color rgba(0,0,0,0.1)
+						-webkit-border-radius 4px
+						opacity 0
+						width 8px
+					&::-webkit-scrollbar-thumb
+						background-color rgba(0,0,0,0.1)
+						-webkit-border-radius 4px
+						opacity 0
+						width 8px
+					li
+						position relative
+						cursor default
+						&:nth-child(2n+1)
+							background-color rgba(255,255,255,0.95)
+							&:hover
+								background-color rgba(243,243,244,0.95)
+								.btns
+									display block
+								>.enjoy
+									display block
+							&.current
+								background-color rgba(232,232,234,0.95)
+						&:nth-child(2n)
+							background-color rgba(250,250,251,0.95)
+							&:hover
+								background-color rgba(243,243,244,0.95)
+								.btns
+									display block
+								>.enjoy
+									display block
+							&.current
+								background-color rgba(232,232,234,0.95)
 						i
 							display inline-block
-							cursor pointer
 							vertical-align middle
-							background-image url(icon)
-							&.back
-								width 13px
-								height 14px
-								background-position -60px -120px
-								&:hover
-									background-position -90px -120px
-							&.searchBtn
+							&.playStatus
 								width 15px
-								height 15px
-								background-position -60px 0
-								&:hover
-									background-position -90px 0
-						input
-							margin 0 8px
+								height 28px
+								position relative
+								&.enable
+									&:after
+										content " "
+										font-size 0
+										border-top 5px solid transparent
+										border-left 0 solid
+										border-bottom 5px solid transparent
+										border-left 7px solid rgb(199,48,48)
+										left 50%
+										top 50%
+										position absolute
+										transform translate(-50%,-50%)
+						.songInfo
+							display inline-block
+							width 200px
+							margin-left 5px
 							vertical-align middle
-							width 230px
-							border none
-							height 20px
-							line-height 20px
-							text-indent 5px
-							border-radius 2px
-							background-color rgba(255,255,255,0.9)
-							font-size 12px
-							cursor text
-					.searchList
-						height 252px
-						overflow-y auto
-						background-color rgba(255,255,255,0.9)
-						text-align left
-						&:-webkit-scrollbar
-							background-color transparent
-							width 8px
-						&::-webkit-scrollbar
-							background-color transparent
-							width 8px
-						&:-webkit-scrollbar-thumb
-							background-color rgba(0,0,0,0.1)
-							-webkit-border-radius 4px
-							opacity 0
-							width 8px
-						&::-webkit-scrollbar-thumb
-							background-color rgba(0,0,0,0.1)
-							-webkit-border-radius 4px
-							opacity 0
-							width 8px
-						li
-							position relative
-							height 28px
-							line-height 28px
-							&:nth-child(2n+1)
-								background-color rgba(255,255,255,0.95)
-								&:hover
-									background-color rgba(243,243,244,0.95)
-									.btns
-										display block
-								&.current
-									background-color rgba(232,232,234,0.95)
-							&:nth-child(2n)
-								background-color rgba(250,250,251,0.95)
-								&:hover
-									background-color rgba(243,243,244,0.95)
-									.btns
-										display block									
-								&.current
-									background-color rgba(232,232,234,0.95)
-							.songInfo
+							overflow hidden
+							text-overflow ellipsis
+							white-space nowrap
+							font-size 13px
+							p
 								display inline-block
-								width 220px
-								margin-left 5px
-								vertical-align middle
-								overflow hidden
-								text-overflow ellipsis
-								white-space nowrap
+							.songName
+								color rgb(55,55,55)
 								font-size 12px
-								margin-left 15px
-								p
-									display inline-block
-								.songName
-									color rgb(55,55,55)
-								.singer
-									color rgb(103,103,103)
-							.btns
-								position absolute
-								top 50%
-								right 10px
-								transform translate(0,-50%)
-								font-size 0
-								display none
-								i
-									display inline-block
-									vertical-align middle
-									cursor pointer
-									margin-left 5px
-									&.play
-										position relative
-										width 7px
-										height 10px
-										margin-left 7px
+							.singer
+								color rgb(103,103,103)
+								font-size 12px
+						>.enjoy
+							width 14px
+							height 13px
+							background-image url(icon)
+							background-position 0 -120px
+							display inline-block
+							vertical-align middle
+							cursor pointer
+							margin-left 5px
+							position absolute
+							right 10px
+							transform translate(0,-50%)
+							top 50%
+							display none
+							&:hover
+								background-position -30px -120px
+							&.enable
+								background-position -30px -120px
+								display block						
+						.btns
+							position absolute
+							top 50%
+							right 30px
+							transform translate(0,-50%)
+							font-size 0
+							display none
+							i
+								display inline-block
+								vertical-align middle
+								cursor pointer
+								margin-left 5px
+								&.play
+									position relative
+									width 7px
+									height 10px
+									margin-left 7px
+									&:after
+										content ""
+										position absolute
+										left 50%
+										top 50%
+										transform translate(-50%,-50%)
+										width 0
+										height 0
+										border-top 5px solid transparent
+										border-right 0 solid
+										border-bottom 5px solid transparent
+										border-left 7px solid rgb(132,132,132)
+									&:hover
 										&:after
 											content ""
 											position absolute
@@ -674,64 +508,232 @@ icon = '../src/icon.png'
 											border-top 5px solid transparent
 											border-right 0 solid
 											border-bottom 5px solid transparent
-											border-left 7px solid rgb(132,132,132)
-										&:hover
-											&:after
-												content ""
-												position absolute
-												left 50%
-												top 50%
-												transform translate(-50%,-50%)
-												width 0
-												height 0
-												border-top 5px solid transparent
-												border-right 0 solid
-												border-bottom 5px solid transparent
-												border-left 7px solid rgb(199,48,48)
-									&.addToList
-										position relative
-										width 16px
-										height 16px
-										&:before
-											content " "
-											position absolute
-											left 50%
-											top 50%
-											transform translate(-50%,-50%)
-											width 70%
-											height 1px
-											background-color rgb(132,132,132)
-											font-size 0
+											border-left 7px solid rgb(199,48,48)
+								// &.enjoy
+								// 	width 14px
+								// 	height 13px
+								// 	background-image url(icon)
+								// 	background-position 0 -120px
+								// 	&:hover
+								// 		background-position -30px -120px
+								// 	&.enable
+								// 		background-position -30px -120px
+								&.delete
+									width 13px
+									height 14px
+									background-image url(icon)
+									background-position -120px -90px
+									margin-left 9px
+									&:hover
+										background-position -150px -90px
+				.playListIsEmpty
+					position relative
+					height 100%
+					span
+						position absolute
+						left 50%
+						top 50%
+						transform translate(-50%,-50%)
+						width 80%
+						text-align center
+						line-height 18px
+						font-size 12px
+						color rgb(200,200,200)
+			>.back
+				height 280px
+				width 100%
+				position absolute
+				left 0
+				top 0
+				box-shadow 0 3px 10px rgba(0,0,0,0.1)
+				backface-visibility hidden
+				transform rotateY(180deg)
+				overflow hidden
+				transition transform 0.5s, height 0.5s
+				height 0
+				cursor default
+				&.enable
+					height 280px					
+				&.flip
+					transform rotateY(0)
+				.input
+					line-height 28px
+					font-size 0
+					text-align center
+					// background-color rgba(0,0,0,0.1)
+					background-color rgba(240,240,240,0.9)
+					i
+						display inline-block
+						cursor pointer
+						vertical-align middle
+						background-image url(icon)
+						&.back
+							width 13px
+							height 14px
+							background-position -60px -120px
+							&:hover
+								background-position -90px -120px
+						&.searchBtn
+							width 15px
+							height 15px
+							background-position -60px 0
+							&:hover
+								background-position -90px 0
+					input
+						margin 0 8px
+						vertical-align middle
+						width 230px
+						border none
+						height 20px
+						line-height 20px
+						text-indent 5px
+						border-radius 2px
+						background-color rgba(255,255,255,0.9)
+						font-size 12px
+						cursor text
+				.searchList
+					height 252px
+					overflow-y auto
+					background-color rgba(255,255,255,0.9)
+					text-align left
+					&:-webkit-scrollbar
+						background-color transparent
+						width 8px
+					&::-webkit-scrollbar
+						background-color transparent
+						width 8px
+					&:-webkit-scrollbar-thumb
+						background-color rgba(0,0,0,0.1)
+						-webkit-border-radius 4px
+						opacity 0
+						width 8px
+					&::-webkit-scrollbar-thumb
+						background-color rgba(0,0,0,0.1)
+						-webkit-border-radius 4px
+						opacity 0
+						width 8px
+					li
+						position relative
+						height 28px
+						line-height 28px
+						&:nth-child(2n+1)
+							background-color rgba(255,255,255,0.95)
+							&:hover
+								background-color rgba(243,243,244,0.95)
+								.btns
+									display block
+							&.current
+								background-color rgba(232,232,234,0.95)
+						&:nth-child(2n)
+							background-color rgba(250,250,251,0.95)
+							&:hover
+								background-color rgba(243,243,244,0.95)
+								.btns
+									display block									
+							&.current
+								background-color rgba(232,232,234,0.95)
+						.songInfo
+							display inline-block
+							width 220px
+							margin-left 5px
+							vertical-align middle
+							overflow hidden
+							text-overflow ellipsis
+							white-space nowrap
+							font-size 12px
+							margin-left 15px
+							p
+								display inline-block
+							.songName
+								color rgb(55,55,55)
+							.singer
+								color rgb(103,103,103)
+						.btns
+							position absolute
+							top 50%
+							right 10px
+							transform translate(0,-50%)
+							font-size 0
+							display none
+							i
+								display inline-block
+								vertical-align middle
+								cursor pointer
+								margin-left 5px
+								&.play
+									position relative
+									width 7px
+									height 10px
+									margin-left 7px
+									&:after
+										content ""
+										position absolute
+										left 50%
+										top 50%
+										transform translate(-50%,-50%)
+										width 0
+										height 0
+										border-top 5px solid transparent
+										border-right 0 solid
+										border-bottom 5px solid transparent
+										border-left 7px solid rgb(132,132,132)
+									&:hover
 										&:after
-											content " "
+											content ""
 											position absolute
 											left 50%
 											top 50%
 											transform translate(-50%,-50%)
-											height 70%
-											width 1px
-											background-color rgb(132,132,132)
-											font-size 0
-										&:hover
-											&:before
-												background-color rgb(199,48,48)
-											&:after
-												background-color rgb(199,48,48)
-		&.mini
-			width 66px
+											width 0
+											height 0
+											border-top 5px solid transparent
+											border-right 0 solid
+											border-bottom 5px solid transparent
+											border-left 7px solid rgb(199,48,48)
+								&.addToList
+									position relative
+									width 16px
+									height 16px
+									&:before
+										content " "
+										position absolute
+										left 50%
+										top 50%
+										transform translate(-50%,-50%)
+										width 70%
+										height 1px
+										background-color rgb(132,132,132)
+										font-size 0
+									&:after
+										content " "
+										position absolute
+										left 50%
+										top 50%
+										transform translate(-50%,-50%)
+										height 70%
+										width 1px
+										background-color rgb(132,132,132)
+										font-size 0
+									&:hover
+										&:before
+											background-color rgb(199,48,48)
+										&:after
+											background-color rgb(199,48,48)
+	&.mini
+		width 66px
+		height 42px
+		// .moveBg
+		// 	width 42px
+		// 	height 42px
+		.container
+			width 42px
 			height 42px
-			// .moveBg
-			// 	width 42px
-			// 	height 42px
-			.container
+			.panelHeader
 				width 42px
 				height 42px
-				.panelHeader
-					width 42px
-					height 42px
-					.control
-						display none
-					.btn
-						display none
-				.panelBody
+				.control
 					display none
+				.btn
+					display none
+			.panelBody
+				display none
